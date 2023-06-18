@@ -1,10 +1,8 @@
 #importing requiered modules
-import os
 import sys
 import socket
-
-#clearing the screen
-os.system("clear")
+import time
+import threading
 
 #banner
 print("Port Scanner")
@@ -12,8 +10,15 @@ print("By: Kr.Vikash")
 print("")
 
 #asking for the target
-target = input("Enter the target IP: ")
+target = input("Enter the target Name/IP: ")
 
+try:
+    #resolving the target
+    target = socket.gethostbyname(target)
+except socket.gaierror:
+    #could not resolve
+    print("Target name invalid")
+    sys.exit()
 #asking for the port range
 port_range = input("Enter the port range (ex: 1-100): ")
 
@@ -22,26 +27,25 @@ low_port = int(port_range.split("-")[0])
 high_port = int(port_range.split("-")[1])
 
 #scanning the ports
-for port in range(low_port, high_port):
-    try:
-        #creating a socket
-        s = socket.socket()
-        #setting the timeout
-        s.settimeout(0.5)
-
-        #connecting to the target
-        s.connect((target, port))
-
-        #printing the open port
+def scan(port):
+    #creating a socket
+    s = socket.socket()
+    #setting the timeout
+    s.settimeout(2) 
+    #connecting to the target
+    con=s.connect_ex((target, port))
+    #printing the open port
+    if(not con):
         print(f"Port {port} is open")
+    #closing the socket
+    s.close()
 
-        #closing the socket
-        s.close()
-
-    except:
-        #printing the closed port
-        print(f"Port {port} is closed")
-
+for port in range(low_port, high_port):
+    #creating a thread
+    thread = threading.Thread(target=scan, args=(port,))
+    
+    #starting the thread
+    thread.start()
 #exiting the program
 sys.exit()
 
