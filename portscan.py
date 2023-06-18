@@ -26,6 +26,8 @@ for port in range(low_port, high_port):
     try:
         #creating a socket
         s = socket.socket()
+        #setting the timeout
+        s.settimeout(0.5)
 
         #connecting to the target
         s.connect((target, port))
