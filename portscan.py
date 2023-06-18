@@ -10,7 +10,7 @@ print("By: Kr.Vikash")
 print("")
 
 #asking for the target
-target = input("Enter the target Name/IP: ")
+target = input("Enter the target(URL/IP) : ")
 
 try:
     #resolving the target
@@ -39,14 +39,19 @@ def scan(port):
         print(f"Port {port} is open")
     #closing the socket
     s.close()
+threads = []
 
 for port in range(low_port, high_port):
     #creating a thread
     thread = threading.Thread(target=scan, args=(port,))
+    threads.append(thread)
     
     #starting the thread
     thread.start()
-#exiting the program
-sys.exit()
+
+#waiting for all threads to complete
+for thread in threads:
+    thread.join()
 
 #end of the program
+
