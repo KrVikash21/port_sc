@@ -12,3 +12,7 @@ For scanning the open port of any network
 5. Then we create a thread for each port and start the thread.
 6. Finally we exit the program.
 ###
+### !!!Alert!!!
+    There maybe some Limition on using this port scanner on Virtual machine 
+    because of lesser hardware access, so try to scan the prot in the batch of 100 
+###
